@@ -59,6 +59,20 @@ public abstract class Player
         return hand.cardNum();
     }
 
+    public int numOfACardInHand(int cardValue)
+    {
+        int numOfCards = 0;
+
+        for (Card card:
+             hand.getHand())
+        {
+            if (card.getValue() == cardValue)
+                numOfCards++;
+        }
+
+        return numOfCards;
+    }
+
     public Card checkIfCardInvalid(String prompt)
     {
         boolean isInvalid = true;
@@ -78,7 +92,7 @@ public abstract class Player
         return card;
     }
 
-    //checks if the number inputed is valid in this cirumcstance
+    //checks if the number imputed is valid in this circumstance
     public int inputIntValidation(int minNum, int maxNum, String prompt)
     {
         int chosenNum =  h.getIntInput(prompt);
