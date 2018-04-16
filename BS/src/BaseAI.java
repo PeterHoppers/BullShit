@@ -6,10 +6,12 @@ public class BaseAI extends BSPlayer
     byte bsThreshold; //if the amount of points is greater than this, the AI will call BS (0-100)
     byte lieThreshold; //if the amount of points is greater than this, the AI will lie (0 - 100)
 
-    public BaseAI(String name, BSGame base)
+    public BaseAI(String name, BSGame base, byte bsThreshold, byte lieThreshold)
     {
         super(name, base);
         this.base = base;
+        this.bsThreshold = bsThreshold;
+        this.lieThreshold = lieThreshold;
     }
 
     //method called by the game loop to prompt card playing
@@ -62,6 +64,11 @@ public class BaseAI extends BSPlayer
         //else
             //selections = GrabCardsOfAValue(valueToPlay)
 
+
+        //Step 5. Grab the indexs of the cards they are playing
+
+
+        //Step 6. Remove the cards from hand
         //in order to remove the cards properly from the hand, we need to sort them from largest to smallest
         int temp;
         for (int i = 0; i < selections.size(); i++)
@@ -85,6 +92,7 @@ public class BaseAI extends BSPlayer
             hand.removeCard(selectedCard);
         }
 
+        //Step 7. Play the cards.
         base.addCheckCards(cardsToPlay);
     }
 
@@ -145,11 +153,34 @@ public class BaseAI extends BSPlayer
         ///also add checking which cards this AI has already played. Issue right now is clearing it when BS is called by someone
 
         //Step 4. Check the number of cards in the discard pile (less cards, higher chance of calling it)
+        if (numOfCardDiscarded < 3)
+            levelBS += 40;
+        else if (numOfCardDiscarded < 6)
+            levelBS += 20;
+        else if (numOfCardDiscarded < 9)
+            levelBS += 0;
+        else if (numOfCardDiscarded < 12)
+            levelBS -= 20;
+        else
+            levelBS -= 40;
 
         //Step 5. Check the number of cards in its hand (less cards, less chance of calling it)
+        int cardsInHand = hand.getCardCount();
+
+        if (cardsInHand < 3)
+            levelBS -= 40;
+        else if (cardsInHand < 6)
+            levelBS -= 20;
+        else if (cardsInHand < 9)
+            levelBS -= 0;
+        else if (cardsInHand < 12)
+            levelBS += 20;
+        else
+            levelBS += 40;
 
         //Step 6. Check if the player who played is going to win if no one calls BS
 
+        //Step 7. Determine if the threshold is greater than the amount to lie
         if (levelBS > bsThreshold)
             return true;
         else
