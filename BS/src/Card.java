@@ -94,7 +94,7 @@ public class Card
     {
         switch ( suit )
         {
-            case SPADES:   return "Spades";
+            case SPADES:   return "\u2660";
             case HEARTS:   return "Hearts";
             case DIAMONDS: return "Diamonds";
             case CLUBS:    return "Clubs";

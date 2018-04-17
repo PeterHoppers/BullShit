@@ -26,7 +26,7 @@ class BSGameController extends GameController
     public void menuDisplayBlock()
     {
         System.out.println("\t\t\t\t ======= Welcome to the card game BS ======= ");
-        System.out.println("\t\t\t\t\t  The game where lying is encouraged!");
+        System.out.println("\t\t\t\t\t The game where lying is encouraged!");
         System.out.println("\n1. Start a Game");
         System.out.println("2. Learn to Play");
         int option = h.getIntInput("What would you like to do? : ");
