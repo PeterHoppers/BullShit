@@ -19,7 +19,27 @@ class BSGameController extends GameController
 
         handler = new BSGame(playerNum);
 
-        execGame(handler);
+        handler.setupDeck();
+        handler.shuffleDeck();
+
+        String name = h.getStringInput("What is your name?");
+        handler.addPlayer(name);
+
+        for (int index = 1; index < numPlayers; index++)
+        {
+            String aiName = h.getStringInput("What is the name of AI " + index + " ?");
+            int bsIndex = h.getIntInput("What is their chance to call BS?");
+            int lieIndex = h.getIntInput("What is their chance to call lie?");
+            handler.addAI(aiName, bsIndex, lieIndex);
+        }
+
+        double numCards = 51.0 / numPlayers;
+        numCards = Math.ceil(numCards);
+
+        handler.dealDeck((int)numCards);
+        handler.gameLoop();
+
+       // execGame(handler);
     }
 
     public void displayBlock() {

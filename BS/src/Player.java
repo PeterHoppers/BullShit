@@ -73,6 +73,17 @@ public abstract class Player
         return numOfCards;
     }
 
+    public int indexOfCardValue(int cardValue)
+    {
+        for (int i = 0; i < hand.cardNum(); i++)
+        {
+            if (hand.getCard(i).getValue() == cardValue)
+                return i;
+        }
+
+        return -1;
+    }
+
     public Card checkIfCardInvalid(String prompt)
     {
         boolean isInvalid = true;

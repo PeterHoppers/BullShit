@@ -23,6 +23,12 @@ public class BSGame extends Game
         numPlayers++;
     }
 
+    public void addAI(String name, int bsIndex, int lieIndex)
+    {
+        players[numPlayers] = new BaseAI(name, this, bsIndex, lieIndex);
+        numPlayers++;
+    }
+
     @Override
     public void dealDeck(int cardsPerPlayer)
     {
