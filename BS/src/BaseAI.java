@@ -32,11 +32,11 @@ public class BaseAI extends BSPlayer
 
         //=================Calculate Which Cards To Play================
         int lieValue = 0; //if this value is greater than
-        //Step 1. Figure out if there are any cards that they can play without lying
+        //Step 1. Decide if there are enough cards to play without lying
         int valueToPlay = base.valueToPlay;
 
         int matchingCardsInHand = numOfACardInHand(valueToPlay);
-        //Step 2. Decide if there are enough cards to play without lying
+
         switch (matchingCardsInHand)
         {
             case 4:
@@ -56,19 +56,17 @@ public class BaseAI extends BSPlayer
                 break;
         }
 
-        //Step 3. Check if there are any cards that are good to lie with (cards that will be unable to be played for a while)
-
-        //Step 4. Decide if they should lie or not
-        //if (lieValue > lieThreshold)
-            //DecideWhatCardsToLieWith()
-        //else
-            //selections = GrabCardsOfAValue(valueToPlay)
+        //Step 3. Decide if they should lie or not
+        if (lieValue > lieThreshold)
+            selections = DecideWhatCardsToLieWith(valueToPlay);
+        else
+            selections = GrabIndexesOfCardsOfValue(valueToPlay);
 
 
-        //Step 5. Grab the indexs of the cards they are playing
+        //Step 4. Grab the indexes of the cards they are playing
 
 
-        //Step 6. Remove the cards from hand
+        //Step 5. Remove the cards from hand
         //in order to remove the cards properly from the hand, we need to sort them from largest to smallest
         int temp;
         for (int i = 0; i < selections.size(); i++)
@@ -92,7 +90,7 @@ public class BaseAI extends BSPlayer
             hand.removeCard(selectedCard);
         }
 
-        //Step 7. Play the cards.
+        //Step 6. Play the cards.
         base.addCheckCards(cardsToPlay);
     }
 
@@ -185,5 +183,17 @@ public class BaseAI extends BSPlayer
             return true;
         else
             return false;
+    }
+
+    List<Integer> DecideWhatCardsToLieWith(int value)
+    {
+        List<Integer> cardIndexes = new ArrayList<Integer>();
+
+        cardIndexes = GrabIndexesOfCardsOfValue(value);
+    }
+
+    List<Integer> GrabIndexesOfCardsOfValue(int value)
+    {
+        return null;
     }
 }
