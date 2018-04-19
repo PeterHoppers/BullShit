@@ -131,9 +131,7 @@ public class Card
     /**
      * Returns a string representation of this card, including both
      * its suit and its value (except that for a Joker with value 1,
-     * the return value is just "Joker").  Sample return values
-     * are: "Queen of Hearts", "10 of Diamonds", "Ace of Spades",
-     * "Joker", "Joker #2"
+     * the return value is just "Joker").
      */
     public String toString()
     {

@@ -93,13 +93,13 @@ public class BSGame extends Game
 
                 if (!hasLied)
                 {
-                    h.display(playingPlayer.name + " did not lie, meaning that " + calledPlayer.name + " get the discard pile.");
+                    h.display(playingPlayer.name + " did not lie, meaning that " + calledPlayer.name + " got the discard pile.");
                     addCheckCardsToDiscard();
                     addDiscardToHand(calledPlayer);
                 }
                 else
                 {
-                    h.display(playingPlayer.name + " did lie, meaning that they get the discard pile.");
+                    h.display(playingPlayer.name + " did lie, meaning that they got the discard pile.");
                     addCheckCardsToDiscard();
                     addDiscardToHand(playingPlayer);
                 }

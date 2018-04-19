@@ -11,12 +11,21 @@ public class GameController
     public int getPlayerNum()
     {
         // ===== Potentially Fix entering string for player number ===== \\
-        int playerNum = h.getIntInput("How Many Players are Going to Play? : ");
+        int playerNum = h.getIntInput("How Many People are Going to Play? : ");
 
-        while (playerNum <= 1)
+        while (playerNum <= 2 || playerNum > 10)
         {
-            h.display("You cannot play a game with less than 2 players!");
-            playerNum = h.getIntInput("How many players are going to play? : ");
+            if(playerNum <= 2)
+            {
+                h.display("You cannot play a game with less than 3 players!");
+                playerNum = h.getIntInput("How Many People are Going to Play? : ");
+            }
+            else if (playerNum > 10)
+            {
+                h.display("You cannot play a game with more than 10 players!");
+                playerNum = h.getIntInput("How Many People are Going to Play? : ");
+            }
+
         }
 
         numPlayers = playerNum;
@@ -57,6 +66,6 @@ public class GameController
         System.out.println("If someone calls BS, and you lied, you have to take the discard pile.");
         System.out.println("If someone calls BS, and you told the truth, they have to take the discard pile.");
         System.out.println("Play continues in in this fashion until someone has no cards left in hand.");
-        h.getStringInput("Press 'Enter' to return to the main menu.");
+        h.getStringInput("\nType 'Back' and press enter to return to the Main Menu.");
     }
 }
