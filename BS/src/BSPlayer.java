@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class BSPlayer extends Player
@@ -25,14 +28,23 @@ public class BSPlayer extends Player
     public void cardDecision(List<Card> cardPile)
     {
         List<Card> cardsToPlay = new ArrayList<Card>();
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
         String input = "y";
         List<Integer> selections = new ArrayList<Integer>();
 
         while(input.equalsIgnoreCase("y"))
         {
+            //int indexStorage[] = new int[cardsInHand()];
+
+            //System.out.print("Choose a card or cards from your hand: ");
+            //String[] indexNums = new String[cardsInHand()];
+            //indexNums = in.readLine().split(" ");
+
             boolean isNumUnique = true;
-            int indexSelected = inputIntValidation(0, cardsInHand(), "Choose a card from your hand: ");
+
+            int indexSelected = inputIntValidation(0, cardsInHand(), "Choose a card or cards from your hand:\n ");
+
             int numToAdd = indexSelected - 1;
 
             for (Integer num:

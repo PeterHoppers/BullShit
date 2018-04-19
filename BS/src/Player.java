@@ -121,7 +121,7 @@ public abstract class Player
     {
         switch ( value )
         {
-            case 1:   return "Ace";
+            case 1:   return "A";
             case 2:   return "2";
             case 3:   return "3";
             case 4:   return "4";
@@ -131,9 +131,9 @@ public abstract class Player
             case 8:   return "8";
             case 9:   return "9";
             case 10:  return "10";
-            case 11:  return "Jack";
-            case 12:  return "Queen";
-            default:  return "King";
+            case 11:  return "J";
+            case 12:  return "Q";
+            default:  return "K";
         }
     }
 
