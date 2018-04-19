@@ -94,10 +94,10 @@ public class Card
     {
         switch ( suit )
         {
-            case SPADES:   return "Spades";
-            case HEARTS:   return "Hearts";
-            case DIAMONDS: return "Diamonds";
-            case CLUBS:    return "Clubs";
+            case SPADES:   return "\u2664";
+            case HEARTS:   return "\u2661";
+            case DIAMONDS: return "\u2662";
+            case CLUBS:    return "\u2667";
             default:       return "Joker";
         }
     }
@@ -112,7 +112,7 @@ public class Card
     {
         switch ( value )
         {
-            case 1:   return "Ace";
+            case 1:   return "A";
             case 2:   return "2";
             case 3:   return "3";
             case 4:   return "4";
@@ -122,9 +122,9 @@ public class Card
             case 8:   return "8";
             case 9:   return "9";
             case 10:  return "10";
-            case 11:  return "Jack";
-            case 12:  return "Queen";
-            default:  return "King";
+            case 11:  return "J";
+            case 12:  return "Q";
+            default:  return "K";
         }
     }
 
@@ -137,7 +137,7 @@ public class Card
      */
     public String toString()
     {
-        return getValueAsString() + " of " + getSuitAsString();
+        return getValueAsString() + getSuitAsString();
     }
 } // end class Card
 

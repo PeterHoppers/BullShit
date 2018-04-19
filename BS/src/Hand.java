@@ -106,7 +106,7 @@ public class Hand {
 
         for (int card = 0; card < hand.size(); card++)
         {
-            toReturn += "" + (card + 1) + ". " + hand.get(card) + "\n";
+            toReturn += "" + (card + 1) + ")\t " + hand.get(card) + "\n";
         }
 
         return toReturn;
