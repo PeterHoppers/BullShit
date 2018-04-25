@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.List;
 
 public abstract class Player
@@ -36,7 +37,7 @@ public abstract class Player
         return toRemove;
     }
 
-    public abstract void cardDecision(List<Card> cardPile);
+    public abstract void cardDecision(List<Card> cardPile) throws IOException;
     public abstract String playerChoice();
 
     protected boolean checkSuits(Card playerCard,  Card topCard)
