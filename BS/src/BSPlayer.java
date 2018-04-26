@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class BSPlayer extends Player
@@ -17,50 +20,67 @@ public class BSPlayer extends Player
         hand.cardSort();
         h.display("Your hand is: \n" + hand );
         h.display("You need to play " + getValueAsString(base.valueToPlay));
-        cardDecision(cardsToPlayOn);
+        try
+        {
+            cardDecision(cardsToPlayOn);
+        }
+        catch(IOException e)
+        {
+            System.out.println("Exception was thrown in BSPlayer for 'play()' method");
+        }
     }
 
     //decides what cards to play
     @Override
-    public void cardDecision(List<Card> cardPile)
+    public void cardDecision(List<Card> cardPile) throws IOException
     {
         List<Card> cardsToPlay = new ArrayList<Card>();
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
         String input = "y";
         List<Integer> selections = new ArrayList<Integer>();
 
         while(input.equalsIgnoreCase("y"))
         {
-            boolean isNumUnique = true;
-            int indexSelected = inputIntValidation(0, cardsInHand(), "Choose a card from your hand: ");
-            int numToAdd = indexSelected - 1;
+            System.out.print("Choose a card or cards from your hand: ");
 
-            for (Integer num:
-                    selections)
+            String[] indexNumsString = new String[4];
+            indexNumsString = in.readLine().split(" ");
+            System.out.println("IndexNums are: " + indexNumsString.toString());
+            int[] indexNums = new int[indexNumsString.length];
+
+
+            for(int i = 0; i < indexNums.length; i++)
             {
-                if (num.equals(numToAdd))
-                {
-                    isNumUnique = false;
+                indexNums[i] = Integer.parseInt(indexNumsString[i]);
+
+                boolean isNumUnique = true;
+                //int indexSelected = inputIntValidation(0, cardsInHand(), "Choose a card or cards from your hand:\n ");
+
+                //int numToAdd = indexSelected - 1;
+                int numToAdd = indexNums[i]-1;
+
+
+                for (Integer num :
+                        selections) {
+                    if (num.equals(numToAdd)) {
+                        isNumUnique = false;
+                        break;
+                    }
+                }
+
+                if (isNumUnique) {
+                    selections.add(indexNums[i]-1);
+                } else {
+                    h.display("You already selected card " + indexNums[i] +". The duplicate selection was ignored");
+                }
+
+                if (selections.size() == hand.cardNum()) {
+                    h.display("You have played all the cards in your hand!");
+                    input.equals("Whoops");
                     break;
                 }
             }
-
-            if (isNumUnique)
-            {
-                selections.add(indexSelected - 1);
-            }
-            else
-            {
-                h.display("You already selected that card to play.");
-            }
-
-            if (selections.size() == hand.cardNum())
-            {
-                h.display("You have played all the cards in your hand!");
-                input.equals("Whoops");
-                break;
-            }
-
             input = h.getStringInput("Do you want to choose another card to play? (Y/N)");
         }
 
