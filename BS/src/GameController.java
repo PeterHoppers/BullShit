@@ -31,7 +31,7 @@ public class GameController
         numPlayers = playerNum;
         return numPlayers;
     }
-
+/*  ========== Not used for BS Game ==========
     public void execGame(Game handler)
     {
         handler.setupDeck();
@@ -49,23 +49,24 @@ public class GameController
         handler.dealDeck((int)numCards);
         handler.gameLoop();
     }
-
+*/
     public void rulesDisplayBlock()
     {
-        System.out.println("\n\t\t\t\t\t\t ======= BS Game Rules ======= ");
-        System.out.println("\t\t  The goal of the game is to discard all cards from your hand.");
-        System.out.println("\t\t\t\tYou discard a certain number of card on your turn");
-        System.out.println("\t Since you discard face down, you can lie about what cards you played.");
-        System.out.println("\nFor example: " +
-                           "\nThe game starts with someone playing Aces.");
-        System.out.println("Say Player 1 has Two Aces, One Jack, Two 7's, and Three 4's.");
-        System.out.println("Player 1 can choose to play any number of cards in their hand. " +
-                           "\nAce or otherwise. But the player must say they are Aces.");
-        System.out.println("After Player 1 has selected cards to play, the first player to their left can choose to call BS.");
-        System.out.println("If they do not call BS, it continues around until someone calls BS or it gets back to the player.");
-        System.out.println("If someone calls BS, and you lied, you have to take the discard pile.");
-        System.out.println("If someone calls BS, and you told the truth, they have to take the discard pile.");
-        System.out.println("Play continues in in this fashion until someone has no cards left in hand.");
+        System.out.println("\n\t\t\t\t\t\t ======= BS Game Rules ======= "
+                + "\n\t\t  The goal of the game is to discard all cards from your hand."
+                + "\n\t\t\t\tYou discard a certain number of card on your turn"
+                + "\n\t Since you discard face down, you can lie about what cards you played."
+                + "\nFor example: "
+                + "\nThe game starts with someone playing Aces."
+                + "\nSay Player 1 has Two Aces, One Jack, Two 7's, and Three 4's."
+                + "\nPlayer 1 can choose to play any number of cards in their hand. "
+                + "\nAce or otherwise. But the player must say they are Aces."
+                + "\nAfter Player 1 has selected cards to play, the first player to their left can choose to call BS."
+                + "\nIf they do not call BS, it continues around until someone calls BS or it gets back to the player."
+                + "\nIf someone calls BS, and you lied, you have to take the discard pile."
+                + "\nIf someone calls BS, and you told the truth, they have to take the discard pile."
+                + "\nThe next player will then begin their turn by selecting 2's from their hand."
+                + "\nPlay continues in this fashion until someone has no cards left in hand.");
         h.getStringInput("\nType 'Back' and press enter to return to the Main Menu.");
     }
 }

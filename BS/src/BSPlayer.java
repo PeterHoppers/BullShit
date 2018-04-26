@@ -46,7 +46,6 @@ public class BSPlayer extends Player
 
             String[] indexNumsString = new String[4];
             indexNumsString = in.readLine().split(" ");
-            System.out.println("IndexNums are: " + indexNumsString.toString());
             int[] indexNums = new int[indexNumsString.length];
 
 

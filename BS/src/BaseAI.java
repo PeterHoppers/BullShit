@@ -62,7 +62,7 @@ public class BaseAI extends BSPlayer
         //Step 3. Check Discard Pile size to see if they should lie
         lieValue += (getValueFromDiscard(base.getDiscardPileSize()) / 2);
 
-        h.display("LieValue: " + lieValue + " vs. " + honesty);
+        //h.display("LieValue: " + lieValue + " vs. " + honesty);
 
         //Step 3. Decide if they should lie or not
         if (lieValue > honesty)
@@ -85,7 +85,7 @@ public class BaseAI extends BSPlayer
                 selections = grabIndexesOfCardsOfValue(valueToPlay);
         }
 
-        h.display(selections + " this is the cards the AI is playing " + lieValue + " vs. " + honesty);
+        //h.display(selections + " this is the cards the AI is playing " + lieValue + " vs. " + honesty);
 
 
         //Step 4. Grab the indexes of the cards they are playing
@@ -195,14 +195,19 @@ public class BaseAI extends BSPlayer
         else
             levelBS -= 20;
 
-        h.display(oppHandSize + " is how many cards they have");
-        h.display("The levelBS is " + levelBS);
+        //h.display(oppHandSize + " is how many cards they have");
+        //h.display("The levelBS is " + levelBS);
 
         //Step 7. Determine if the threshold is greater than the amount to lie
         if (levelBS > bsTolerance)
             return true;
+
         else
+        {
+            h.display(this.name + " did not call BS");
             return false;
+        }
+
     }
 
     List<Integer> decideWhatCardsToLieWith(int cardValue, byte numCards)
@@ -228,7 +233,7 @@ public class BaseAI extends BSPlayer
         {
             lieCardIndex = indexOfCardValue(cardValue);
 
-            h.display("We are now grabbing: " + lieCardIndex);
+            //h.display("We are now grabbing: " + lieCardIndex);
 
             if (lieCardIndex == -1) //if the card isn't valid
             {
