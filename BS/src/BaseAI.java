@@ -3,15 +3,15 @@ import java.util.List;
 
 public class BaseAI extends BSPlayer
 {
-    int bsThreshold; //if the amount of points is greater than this, the AI will call BS (0-100)
-    int lieThreshold; //if the amount of points is greater than this, the AI will lie (0 - 100)
+    int bsTolerance; //if the amount of points is greater than this, the AI will call BS (0-100)
+    int honesty; //if the amount of points is greater than this, the AI will lie (0 - 100)
 
-    public BaseAI(String name, BSGame base, int bsThreshold, int lieThreshold)
+    public BaseAI(String name, BSGame base, int bsTolerance, int honesty)
     {
         super(name, base);
         this.base = base;
-        this.bsThreshold = bsThreshold;
-        this.lieThreshold = lieThreshold;
+        this.bsTolerance = bsTolerance;
+        this.honesty = honesty;
     }
 
     //method called by the game loop to prompt card playing
@@ -46,24 +46,46 @@ public class BaseAI extends BSPlayer
                 lieValue -= 0;
                 break;
             case 2:
-                lieValue += 30;
+                lieValue += 20;
                 break;
             case 1:
-                lieValue += 60;
+                lieValue += 40;
                 break;
             case 0:
-                lieValue += 100;
+                lieValue += 70; //they should always lie if they cannot play a card
                 break;
         }
 
+        //Step 2. Check Handsize to see if they should lie
+        lieValue += (getValueFromNumOfCards() / 2);
+
+        //Step 3. Check Discard Pile size to see if they should lie
+        lieValue += (getValueFromDiscard(base.getDiscardPileSize()) / 2);
+
+        h.display("LieValue: " + lieValue + " vs. " + honesty);
+
         //Step 3. Decide if they should lie or not
-        if (lieValue > lieThreshold)
-            selections = DecideWhatCardsToLieWith(valueToPlay);
+        if (lieValue > honesty)
+        {
+            byte numCardsToLie = 0;
+
+            while (lieValue > honesty)
+            {
+                numCardsToLie++;
+
+                lieValue -= 60;
+            }
+            selections = decideWhatCardsToLieWith(valueToPlay, numCardsToLie);
+        }
         else
-            selections = GrabIndexesOfCardsOfValue(valueToPlay);
+        {
+            if (matchingCardsInHand == 0) // if, for some reason, they don't want to lie but cannot avoid it
+                selections = decideWhatCardsToLieWith(valueToPlay, (byte)1);
+            else
+                selections = grabIndexesOfCardsOfValue(valueToPlay);
+        }
 
-
-        h.display(selections + " this is the cards the AI is playing " + lieValue + " vs. " + lieThreshold);
+        h.display(selections + " this is the cards the AI is playing " + lieValue + " vs. " + honesty);
 
 
         //Step 4. Grab the indexes of the cards they are playing
@@ -109,16 +131,16 @@ public class BaseAI extends BSPlayer
         switch(numOfCardsPlayed)
         {
             case 4:
-                levelBS += 90;
+                levelBS += 105;
                 break;
             case 3:
-                levelBS += 60;
+                levelBS += 50;
                 break;
             case 2:
-                levelBS += 20;
+                levelBS += 15;
                 break;
             case 1:
-                levelBS += 0;
+                levelBS += -10;
                 break;
             default:
                 break;
@@ -135,16 +157,16 @@ public class BaseAI extends BSPlayer
                 levelBS += 110;
                 break;
             case 3:
-                levelBS += 70;
+                levelBS += 65;
                 break;
             case 2:
-                levelBS += 30;
+                levelBS += 45;
                 break;
             case 1:
-                levelBS += 10;
+                levelBS += 25;
                 break;
             case 0:
-                levelBS += 0;
+                levelBS += -10;
                 break;
             default:
                 break;
@@ -154,52 +176,45 @@ public class BaseAI extends BSPlayer
         ///also add checking which cards this AI has already played. Issue right now is clearing it when BS is called by someone
 
         //Step 4. Check the number of cards in the discard pile (less cards, higher chance of calling it)
-        if (numOfCardDiscarded < 3)
-            levelBS += 10;
-        else if (numOfCardDiscarded < 6)
-            levelBS += 0;
-        else if (numOfCardDiscarded < 9)
-            levelBS -= 10;
-        else if (numOfCardDiscarded < 12)
-            levelBS -= 20;
-        else
-            levelBS -= 40;
+        levelBS += getValueFromDiscard(numOfCardDiscarded);
 
         //Step 5. Check the number of cards in its hand (less cards, less chance of calling it)
-        int cardsInHand = hand.getCardCount();
-
-        if (cardsInHand < 3)
-            levelBS -= 30;
-        else if (cardsInHand < 6)
-            levelBS -= 10;
-        else if (cardsInHand < 9)
-            levelBS -= 0;
-        else if (cardsInHand < 12)
-            levelBS += 10;
-        else
-            levelBS += 20;
+        levelBS += getValueFromNumOfCards();
 
         //Step 6. Check if the player who played is going to win if no one calls BS
+        int oppHandSize = base.getAmountCardsFromPlayerName(playerName);
 
+        if (oppHandSize < 4)
+            levelBS += 20;
+        else if (oppHandSize < 6)
+            levelBS += 10;
+        else if (oppHandSize < 10)
+            levelBS += 0;
+        else if (oppHandSize < 14)
+            levelBS -= 10;
+        else
+            levelBS -= 20;
+
+        h.display(oppHandSize + " is how many cards they have");
         h.display("The levelBS is " + levelBS);
 
         //Step 7. Determine if the threshold is greater than the amount to lie
-        if (levelBS > bsThreshold)
+        if (levelBS > bsTolerance)
             return true;
         else
             return false;
     }
 
-    List<Integer> DecideWhatCardsToLieWith(int cardValue)
+    List<Integer> decideWhatCardsToLieWith(int cardValue, byte numCards)
     {
         List<Integer> cardIndexes = new ArrayList<Integer>();
 
-        cardIndexes = GrabIndexesOfCardsOfValue(cardValue);
+        cardIndexes = grabIndexesOfCardsOfValue(cardValue);
 
         int lieCardIndex = -1;
 
         //grab the value farthest from the value we're currently playing
-        for (int i = 0; i < 13; i++)
+        for (int i = 0; i < 12; i++)
         {
             cardValue += base.numPlayers;
 
@@ -215,16 +230,22 @@ public class BaseAI extends BSPlayer
 
             h.display("We are now grabbing: " + lieCardIndex);
 
-            if (lieCardIndex == -1)
+            if (lieCardIndex == -1) //if the card isn't valid
             {
-                cardValue -= base.numPlayers;
-
-                if (cardValue < 1)
-                    cardValue += 13;
+                cardValue = subtractValue(cardValue, base.numPlayers, 1, 13); //move onto the value card
             }
             else
             {
-                break;
+                if (numCards > 1) //if we need to grab another card
+                {
+                    cardIndexes.add(lieCardIndex);
+                    cardValue = subtractValue(cardValue, base.numPlayers, 1, 13);
+                    numCards--;
+                }
+                else
+                {
+                    break;
+                }
             }
         }
 
@@ -233,7 +254,17 @@ public class BaseAI extends BSPlayer
         return cardIndexes;
     }
 
-    List<Integer> GrabIndexesOfCardsOfValue(int cardValue)
+    int subtractValue(int value, int subtractValue, int lowValue, int incrementValue)
+    {
+        value -= subtractValue;
+
+        if (value < lowValue)
+            value += incrementValue;
+
+        return value;
+    }
+
+    List<Integer> grabIndexesOfCardsOfValue(int cardValue)
     {
         List<Integer> cardIndexes = new ArrayList<Integer>();
 
@@ -246,5 +277,35 @@ public class BaseAI extends BSPlayer
         }
 
         return cardIndexes;
+    }
+
+    int getValueFromNumOfCards()
+    {
+        int cardsInHand = hand.getCardCount();
+
+        if (cardsInHand < 3)
+            return -20;
+        else if (cardsInHand < 6)
+            return -10;
+        else if (cardsInHand < 9)
+            return 0;
+        else if (cardsInHand < 12)
+            return 10;
+        else
+            return 20;
+    }
+
+    int getValueFromDiscard(int numOfDiscardCards)
+    {
+        if (numOfDiscardCards < 3)
+            return 20;
+        else if (numOfDiscardCards < 6)
+            return 10;
+        else if (numOfDiscardCards < 9)
+            return 0;
+        else if (numOfDiscardCards < 12)
+            return -10;
+        else
+            return -20;
     }
 }

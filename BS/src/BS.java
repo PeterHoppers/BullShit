@@ -29,9 +29,30 @@ class BSGameController extends GameController
         for (int index = 1; index < numPlayers; index++)
         {
             String aiName = h.getStringInput("What is the name of AI " + index + " ?");
-            int bsIndex = h.getIntInput("What is their chance to call BS?");
-            int lieIndex = h.getIntInput("What is their chance to call lie?");
-            handler.addAI(aiName, bsIndex, lieIndex);
+            int aiIndex = h.getIntInput("What type of AI do you want " + aiName + " to be?" +
+                                "\n1) The truthful silent (low chance to lie, low chance to call BS)" +
+                                "\n2) The chaotic slinger (high chance to lie, high chance to call BS" +
+                                "\n3) The eternal doubter (low chance to lie, high chance to call BS" +
+                                "\n4) The sneaky deceiver (high chance to lie, low chance to call BS");
+
+            switch (aiIndex)
+            {
+                case 1:
+                    handler.addAI(aiName, 80, 80);
+                    break;
+                case 2:
+                    handler.addAI(aiName, 50, 50);
+                    break;
+                case 3:
+                    handler.addAI(aiName, 50, 80);
+                    break;
+                case 4:
+                    handler.addAI(aiName, 80, 50);
+                    break;
+                default:
+                    handler.addAI(aiName, 80, 80);
+                    break;
+            }
         }
 
         double numCards = 51.0 / numPlayers;

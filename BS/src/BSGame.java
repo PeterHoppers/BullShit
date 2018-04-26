@@ -183,4 +183,27 @@ public class BSGame extends Game
 
         discardPile.clear();
     }
+
+    int getDiscardPileSize()
+    {
+        return discardPile.size();
+    }
+
+    public int getAmountCardsFromPlayerName(String name)
+    {
+        int id = getPlayerIDFromName(name);
+        return players[id].cardsInHand();
+    }
+
+    public int getPlayerIDFromName(String name)
+    {
+        for (int index = 0; index < players.length; index++)
+        {
+            if (players[index].name.equalsIgnoreCase(name))
+                return index;
+        }
+
+        return -1;
+    }
+
 }
