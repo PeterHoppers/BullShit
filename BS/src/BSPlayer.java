@@ -18,8 +18,15 @@ public class BSPlayer extends Player
     public void play(List<Card> cardsToPlayOn)
     {
         hand.cardSort();
-        h.display("Your hand is: \n" + hand );
-        h.display("You need to play " + getValueAsString(base.valueToPlay));
+
+        for (BSPlayer opp:
+             base.players)
+        {
+            h.display("Number of cards in " + opp.name + "'s hand is: " + opp.cardsInHand());
+        }
+
+        h.display("\nYour hand is: \n" + hand );
+        h.display("You need to play a " + getValueAsString(base.valueToPlay));
         try
         {
             cardDecision(cardsToPlayOn);
@@ -111,8 +118,13 @@ public class BSPlayer extends Player
 
     public boolean callBS(String playerName, int numOfCardsPlayed, int numOfCardDiscarded)
     {
-        String input = h.getStringInput("Do you, " + name + " want to call BS on " + playerName + " who played " + numOfCardsPlayed +
-                " " + getValueAsString(base.valueToPlay) +
+        String plural = "";
+
+        if (numOfCardsPlayed > 1)
+            plural = "s";
+
+        String input = h.getStringInput("Do you, " + name + " , want to call BS on " + playerName + " who said they played " + numOfCardsPlayed +
+                "  " + getValueAsString(base.valueToPlay) + plural +
                 " on a discard pile of " + numOfCardDiscarded + " cards? (Y/N)");
 
         if (input.equalsIgnoreCase("Y"))

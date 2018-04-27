@@ -40,16 +40,16 @@ class BSGameController extends GameController
             switch (aiIndex)
             {
                 case 1:
-                    handler.addAI(aiName, 80, 80);
+                    handler.addAI(aiName, 90, 80);
                     break;
                 case 2:
-                    handler.addAI(aiName, 50, 50);
+                    handler.addAI(aiName, 70, 50);
                     break;
                 case 3:
-                    handler.addAI(aiName, 50, 80);
+                    handler.addAI(aiName, 70, 80);
                     break;
                 case 4:
-                    handler.addAI(aiName, 80, 50);
+                    handler.addAI(aiName, 90, 50);
                     break;
                 default:
                     handler.addAI(aiName, 80, 80);

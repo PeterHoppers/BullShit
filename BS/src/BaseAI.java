@@ -125,16 +125,13 @@ public class BaseAI extends BSPlayer
         int levelBS = 0; //the chance that the AI will call BS
 
         //Step 1. Look at how many cards have been played
-        if (numOfCardsPlayed > 4)
-            levelBS = 999;
-
         switch(numOfCardsPlayed)
         {
             case 4:
-                levelBS += 105;
+                levelBS += 75;
                 break;
             case 3:
-                levelBS += 50;
+                levelBS += 45;
                 break;
             case 2:
                 levelBS += 15;
@@ -154,7 +151,7 @@ public class BaseAI extends BSPlayer
         switch(matchingCardsInHand)
         {
             case 4:
-                levelBS += 110;
+                levelBS += 999;
                 break;
             case 3:
                 levelBS += 65;
@@ -181,24 +178,31 @@ public class BaseAI extends BSPlayer
         //Step 5. Check the number of cards in its hand (less cards, less chance of calling it)
         levelBS += getValueFromNumOfCards();
 
-        //Step 6. Check if the player who played is going to win if no one calls BS
+        //Step 6. Check how many cards are in the player's hand
         int oppHandSize = base.getAmountCardsFromPlayerName(playerName);
 
         if (oppHandSize < 4)
-            levelBS += 20;
-        else if (oppHandSize < 6)
+            levelBS += 15;
+        else if (oppHandSize < 7)
             levelBS += 10;
         else if (oppHandSize < 10)
             levelBS += 0;
         else if (oppHandSize < 14)
             levelBS -= 10;
         else
-            levelBS -= 20;
+            levelBS -= 15;
 
         //h.display(oppHandSize + " is how many cards they have");
         //h.display("The levelBS is " + levelBS);
 
-        //Step 7. Determine if the threshold is greater than the amount to lie
+        //Step 7. For sure call BS if the player will either win or if they played too many cards
+        if (numOfCardsPlayed + matchingCardsInHand > 4)
+            levelBS = 999;
+
+        if (oppHandSize - numOfCardsPlayed < 1)
+            levelBS = 999;
+
+        //Step 8. Determine if the threshold is greater than the amount to lie
         if (levelBS > bsTolerance)
             return true;
 
@@ -289,7 +293,7 @@ public class BaseAI extends BSPlayer
         int cardsInHand = hand.getCardCount();
 
         if (cardsInHand < 3)
-            return -20;
+            return -15;
         else if (cardsInHand < 6)
             return -10;
         else if (cardsInHand < 9)
@@ -303,12 +307,12 @@ public class BaseAI extends BSPlayer
     int getValueFromDiscard(int numOfDiscardCards)
     {
         if (numOfDiscardCards < 3)
-            return 20;
+            return 15;
         else if (numOfDiscardCards < 6)
             return 10;
-        else if (numOfDiscardCards < 9)
+        else if (numOfDiscardCards < 11)
             return 0;
-        else if (numOfDiscardCards < 12)
+        else if (numOfDiscardCards < 14)
             return -10;
         else
             return -20;
